@@ -290,6 +290,8 @@ class PyTestRailPlugin(object):
                 if not item or current_result['status_id'] == TESTRAIL_TEST_STATUS['failed']:
                     # Report result to TestRail immediately
                     self.__publish_results()
+                elif item and item['case_id'] == current_result['case_id']:
+                    self.__publish_results()
 
                 self.all_results.append(current_result)
 
