@@ -240,7 +240,16 @@ class PyTestRailPlugin(object):
         """ Collect result and associated testcases (TestRail) of an execution """
         outcome = yield
         rep = outcome.get_result()
-        comment = rep.longrepr
+
+        if hasattr(rep, 'wasxfail'):
+            comment = rep.wasxfail
+        elif rep.failed:
+            comment = f'{rep.id} {rep.caplog.split(rep.id)[-1]}'
+        else:
+            comment = rep.longrepr
+
+        if len(comment) > 80:
+            comment = f'{rep.id} failed. See Jenkins HTML report for details.'
 
         defects = None
         defect_ids = None
