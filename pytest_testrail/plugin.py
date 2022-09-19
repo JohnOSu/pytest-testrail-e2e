@@ -293,7 +293,19 @@ class PyTestRailPlugin(object):
                 )
 
             if self.report_single_test and rep.when == 'teardown':
-                current_result = self.results[0]
+                """
+                07:48:22 INTERNALERROR> E File                
+                "/home/ubuntu/environments/MobileQaAutomation/lib/python3.7/site-packages/pytest_testrail/plugin.py", 
+                line 296, in pytest_runtest_makereport
+                07:48:22 INTERNALERROR> E                 current_result = self.results[0]
+                07:48:22 INTERNALERROR> E             IndexError: list index out of range
+                """
+                try:
+                    current_result = self.results[0]
+                except:
+                    print('Index Error: PyTestRailPlugin.results list is empty')
+                    return
+
                 item = next((sub for sub in self.all_results if sub['case_id'] == current_result['case_id']
                              and sub['status_id'] == TESTRAIL_TEST_STATUS['failed']), None)
                 if not item or current_result['status_id'] == TESTRAIL_TEST_STATUS['failed']:
