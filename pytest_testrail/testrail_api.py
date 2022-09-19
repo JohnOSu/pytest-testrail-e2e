@@ -123,6 +123,10 @@ class APIClient:
             print("Too many requests: pause for {}s".format(pause))
             time.sleep(pause)
             return self.send_post(uri, data, **kwargs)
+        elif not r.ok:  # possible timeout?
+            print("Something went wrong. Retrying...")
+            time.sleep(60)
+            return self.send_post(uri, data, **kwargs)
         else:
             return r.json()
 
