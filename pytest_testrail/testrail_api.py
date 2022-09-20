@@ -123,10 +123,12 @@ class APIClient:
             print("Too many requests: pause for {}s".format(pause))
             time.sleep(pause)
             return self.send_post(uri, data, **kwargs)
-        elif not r.ok:  # possible timeout?
-            print("Something went wrong. Retrying...")
-            time.sleep(60)
-            return self.send_post(uri, data, **kwargs)
+        elif 400 <= r.status_code <= 499:
+            return r.json()
+        elif not r.ok:  # possible timeout or response with no JSON?
+            msg_data = "Something went wrong: {}".format(data)
+            err_msg = {"conversationId": r.status_code, "message": msg_data}
+            return err_msg
         else:
             return r.json()
 
