@@ -118,19 +118,21 @@ class APIClient:
             timeout=self.timeout
         )
 
-        if r.status_code == 429:  # Too many requests
-            pause = int(r.headers.get('Retry-After', 60))
-            print("Too many requests: pause for {}s".format(pause))
-            time.sleep(pause)
-            return self.send_post(uri, data, **kwargs)
-        elif 400 <= r.status_code <= 499:
-            return r.json()
-        elif not r.ok:  # possible timeout or response with no JSON?
-            msg_data = "Something went wrong: {}".format(data)
-            err_msg = {"conversationId": r.status_code, "message": msg_data}
+        try:
+            if r.status_code == 429:  # Too many requests
+                pause = int(r.headers.get('Retry-After', 60))
+                print("Too many requests: pause for {}s".format(pause))
+                time.sleep(pause)
+                return self.send_post(uri, data, **kwargs)
+            else:
+                return r.json()
+        except Exception as ex: # possible timeout or response with no JSON?
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            msg_data = "{}".format(data)
+            err_msg = {"error": message, "payload": msg_data}
             return err_msg
-        else:
-            return r.json()
+
 
     @staticmethod
     def get_error(json_response):
