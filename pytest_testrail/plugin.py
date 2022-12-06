@@ -248,8 +248,8 @@ class PyTestRailPlugin(object):
         else:
             comment = rep.longrepr
 
-        if comment and len(comment) > 80:
-            comment = f'{rep.id} failed. See Jenkins HTML report for details.'
+        if comment and len(comment) > 320:
+            comment = f'{comment[:320]} \nReport truncated. See Jenkins HTML report for more details.'
 
         defects = None
         defect_ids = None
