@@ -192,7 +192,7 @@ class PyTestRailPlugin(object):
 
     # pytest hooks
 
-    def pytest_report_header(self, config, startdir):
+    def pytest_report_header(self, config, start_path):
         """ Add extra-info in header """
         message = 'pytest-testrail-e2e: '
         if self.testplan_id:
