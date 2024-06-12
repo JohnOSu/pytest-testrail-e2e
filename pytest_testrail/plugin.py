@@ -253,7 +253,7 @@ class PyTestRailPlugin(object):
         if item.get_closest_marker(TESTRAIL_DEFECTS_PREFIX):
             defect_ids = item.get_closest_marker(TESTRAIL_DEFECTS_PREFIX).kwargs.get('defect_ids')
         elif item.get_closest_marker("defectif"):
-            items = re.findall("pytest-defect=\w+-\d*", str(comment))
+            items = re.findall(r"pytest-defect=\w+-\d*", str(comment))
             if len(items) > 0:
                 defect_ids = [items[0].split("=")[-1]]
 
