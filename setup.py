@@ -10,7 +10,7 @@ setup(
     name='pytest-testrail-e2e',
     description='pytest plugin for creating TestRail runs and adding results',
     long_description=read_file('README.rst'),
-    version='3.0.10',
+    version='3.0.11',
     author='JohnOsu',
     author_email='johnosull9@hotmail.com',
     url='https://www.linkedin.com/in/johnosull9/',
